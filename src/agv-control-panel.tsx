@@ -1,23 +1,28 @@
-import React from 'react'; // Importa la librería React, que es necesaria para crear componentes funcionales en una aplicación de React.
+import React, { useState, useEffect } from 'react'; // Importa la librería React, que es necesaria para crear componentes funcionales en una aplicación de React.
 import { Battery, Wifi } from 'lucide-react'; // Importa los iconos de batería y wifi desde la librería lucide-react para mostrar en la interfaz.
+import { io } from 'socket.io-client';
 
+const socket = io('http://localhost:3001');
 
-// Mock function to simulate agv_db.query_variable
-const queryVariable = (variable: string, agvNumber: number) => {
-  // Esta función simula una consulta a la base de datos para obtener el valor de una variable relacionada con un AGV específico.
-
-  if (variable.startsWith('Traffic')) {
-    // Si la variable comienza con 'Traffic', simula datos de tráfico devolviendo 0 o 1.
-    return Math.floor(Math.random() * 2); // Retorna un valor aleatorio de 0 o 1 (simulando estado de tráfico).
+// Función para convertir ArrayBuffer a número con verificación estricta del tamaño
+const arrayBufferToNumber = (buffer, expectedLength) => {
+  if (!buffer || !(buffer instanceof ArrayBuffer)) {
+    return 999;  // Si no es un ArrayBuffer, retorna 'N/A'
   }
-
-  if (variable === 'Battery.Percentage') {
-    // Si la variable es 'Battery.Percentage', simula un valor de porcentaje de batería entre 0 y 100.
-    return Math.floor(Math.random() * 101); // Retorna un valor entre 0 y 100, simulando el porcentaje de batería.
+  const view = new DataView(buffer);
+  // Verificamos el tamaño exacto del buffer antes de leerlo
+  if (buffer.byteLength >= expectedLength) {
+    if (expectedLength === 1) {
+      return view.getUint8(0);  // Si el tamaño esperado es 1 byte, usamos getUint8
+    } else if (expectedLength === 2) {
+      return view.getUint16(0);  // Si el tamaño esperado es 2 bytes, usamos getUint16
+    }
   }
-
-  return Math.floor(Math.random() * 100); // Para cualquier otra variable, devuelve un valor aleatorio entre 0 y 100.
+  return 999;  // Si el buffer no tiene el tamaño esperado
 };
+
+
+
 
 // Define las propiedades (props) que recibirá el componente AGVPanel
 interface AGVProps {
@@ -25,12 +30,15 @@ interface AGVProps {
 }
 
 // Componente que renderiza la información de una zona de tráfico específica para el AGV.
-const TrafficZone: React.FC<{ zone: string; agvNumber: number }> = ({ zone, agvNumber }) => {
+const TrafficZone: React.FC<{ zone: string; agvNumber: number; agvData: any }> = ({ zone, agvNumber, agvData }) => {
   // zone: Representa la zona de tráfico (A o B).
   // agvNumber: El número del AGV para el cual se muestran los datos de tráfico.
+  // agvData: Los datos relacionados con el AGV.
 
-  const request = queryVariable(`Traffic.Zone${zone}.Request`, agvNumber); // Consulta si hay una solicitud de tráfico en la zona.
-  const busy = queryVariable(`Traffic.Zone${zone}.Busy`, agvNumber); // Consulta si la zona de tráfico está ocupada.
+  // Consulta y convierte la solicitud de tráfico en la zona.
+  const request = arrayBufferToNumber(agvData[`Traffic.Zone${zone}.Request`], 1);
+  const busy = arrayBufferToNumber(agvData[`Traffic.Zone${zone}.Busy`], 1); // Agregamos la conversión para el estado de ocupación.
+  console.log(request);
 
   return (
     <div className="traffic-zone">
@@ -58,14 +66,32 @@ const TrafficZone: React.FC<{ zone: string; agvNumber: number }> = ({ zone, agvN
   );
 };
 
+
 // Componente principal AGVPanel
 const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
-  // agvNumber: El número del AGV que se muestra en el panel.
+  const [agvData, setAgvData] = useState(null);
 
-  const batteryPercentage = queryVariable('Battery.Percentage', agvNumber); // Consulta el porcentaje de batería del AGV.
-  const agvEnabled = queryVariable('AGVEnable', agvNumber) > 50; // Consulta si el AGV está habilitado (si el valor es mayor a 50).
-  const wifiStatus = queryVariable('Communication.Status', agvNumber) > 50; // Consulta si el AGV está conectado a WiFi (valor mayor a 50 significa conectado).
-  const screenInfo = queryVariable('ScreenInfo', agvNumber); // Consulta la información de la pantalla del AGV.
+  useEffect(() => {
+    // Escucha los datos enviados desde el servidor WebSocket
+    socket.on('agvData', (data) => {
+      // Filtra los datos del AGV específico basado en el valor de `Communication.ID`
+      const filteredData = data.find((agv) => agv['Communication.ID'] === agvNumber);
+      setAgvData(filteredData);  // Actualiza los datos solo del AGV con el Communication.ID correspondiente
+    });
+
+    return () => {
+      socket.off('agvData');  // Limpia el evento cuando se desmonta el componente
+    };
+  }, [agvNumber]);
+
+  if (!agvData) return <div>Loading...</div>;  // Mostrar "Loading..." si no hay datos
+
+  const batteryPercentage = arrayBufferToNumber(agvData['Battery.Percentage'], 2); // Consulta el porcentaje de batería del AGV.
+  const agvEnabled = agvData['AGVEnable']; // Consulta si el AGV está habilitado (si el valor es mayor a 50).
+  const wifiStatus = agvData['Communication.Status']; // Consulta si el AGV está conectado a WiFi (valor mayor a 50 significa conectado).
+  const screenInfo = arrayBufferToNumber(agvData['ScreenInfo'], 2); // Consulta la información de la pantalla del AGV.
+  const route = arrayBufferToNumber(agvData['LayoutPosition.Route'], 2);
+  const point = arrayBufferToNumber(agvData['LayoutPosition.Point'], 2);
 
   // Función para determinar el color de la batería basado en su porcentaje.
   const getBatteryColor = (percentage: number) => {
@@ -87,7 +113,7 @@ const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
             {/* Etiqueta para el ID del AGV */}
             <div className={`value ${agvEnabled ? 'enabled' : 'disabled'}`}>
               {/* Muestra si el AGV está habilitado o deshabilitado */}
-              {queryVariable('ID_AGV', agvNumber)}
+              {agvData['ID_AGV']}
               {/* Muestra el valor del ID del AGV */}
             </div>
           </div>
@@ -105,7 +131,7 @@ const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
           </div>
         </div>
         <div className="header-right">
-          {/* Parte derecha de la cabecera */}
+          {/* Parte derecha de la cabecera */}  
           <div className="screen-info">
             {/* Información de la pantalla del AGV */}
             <div className="label">ScreenInfo</div>
@@ -117,7 +143,7 @@ const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
             {/* Estado de la comunicación del AGV */}
             <div className="label">Communication</div>
             {/* Etiqueta 'Communication' */}
-            <div className={`value ${wifiStatus ? 'connected' : 'disconnected'}`}>
+            <div className={`value ${wifiStatus === 1 ? 'connected' : 'disconnected'}`}>
               {/* Muestra el estado de la conexión WiFi */}
               <Wifi className="wifi-icon" />
               {/* Icono de WiFi */}
@@ -134,14 +160,14 @@ const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
             {/* Muestra la ruta actual del AGV */}
             <div className="label">Route</div>
             {/* Etiqueta 'Route' */}
-            <div className="value">{queryVariable('LayoutPosition.Route', agvNumber)}</div>
+            <div className="value">{route}</div>
             {/* Muestra el valor de la ruta */}
           </div>
           <div className="point">
             {/* Muestra el punto actual del AGV */}
             <div className="label">Point</div>
             {/* Etiqueta 'Point' */}
-            <div className="value">{queryVariable('LayoutPosition.Point', agvNumber)}</div>
+            <div className="value">{point}</div>
             {/* Muestra el valor del punto */}
           </div>
         </div>
@@ -153,11 +179,12 @@ const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
 
         <div className="traffic-zones">
           {/* Contenedor para las zonas de tráfico */}
-          <TrafficZone zone="A" agvNumber={agvNumber} />
+          <TrafficZone zone="A" agvNumber={agvNumber} agvData={agvData} />
           {/* Renderiza el componente TrafficZone para la zona A */}
-          <TrafficZone zone="B" agvNumber={agvNumber} />
+          <TrafficZone zone="B" agvNumber={agvNumber} agvData={agvData} />
           {/* Renderiza el componente TrafficZone para la zona B */}
-        </div>
+      </div>
+
       </div>
     </div>
   );
