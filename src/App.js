@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import AGVPanel from './agv-control-panel.tsx'
+import './agv-control-panel.css'
 
 function App() {
+  const numberOfAGVs = 3 // You can change this to display more AGVs
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="min-h-screen bg-gray-100 py-8 px-4">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">AGV Control Panel</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[...Array(numberOfAGVs)].map((_, index) => (
+            <AGVPanel key={index + 1} agvNumber={index + 1} />
+          ))}
+        </div>
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
