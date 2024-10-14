@@ -22,8 +22,6 @@ const arrayBufferToNumber = (buffer, expectedLength) => {
 };
 
 
-
-
 // Define las propiedades (props) que recibirá el componente AGVPanel
 interface AGVProps {
   agvNumber: number; // El número del AGV que se le pasa como prop al componente.
@@ -152,6 +150,11 @@ const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
         </div>
       </div>
 
+      <div className={`location ${route === 2 ? '' : 'hidden'}`}>
+        {/* Botón para cambiar la ruta (visible solo si screenInfo es igual a 19) */}
+        CORNER MOD RH
+      </div>
+
       <div className="panel-body">
         {/* Cuerpo principal del panel del AGV */}
         <div className="route-point">
@@ -172,11 +175,13 @@ const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
           </div>
         </div>
 
-        <div className={`change-route ${screenInfo === 19 ? '' : 'hidden'}`}>
-          {/* Botón para cambiar la ruta (visible solo si screenInfo es igual a 19) */}
-          Change route
-        </div>
+      
+      <div className={`error ${screenInfo === 19 ? '' : 'hidden'}`}>
+        {/* Botón para cambiar la ruta (visible solo si screenInfo es igual a 19) */}
+        Change route
+      </div>
 
+    
         <div className="traffic-zones">
           {/* Contenedor para las zonas de tráfico */}
           <TrafficZone zone="A" agvNumber={agvNumber} agvData={agvData} />

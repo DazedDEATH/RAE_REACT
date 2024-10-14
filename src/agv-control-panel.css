@@ -1,6 +1,5 @@
 /* agv-control-panel.css */
 
-
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -16,13 +15,16 @@ body {
   padding: 1rem;
   margin-bottom: 1rem;
   color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;  
 }
 
 .header-left, .header-right {
@@ -66,12 +68,12 @@ body {
 .battery .value {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
 .battery-icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.1rem;
+  height: 2.1rem;
 }
 
 .battery .value.battery-high {
@@ -134,7 +136,25 @@ body {
   color: #ffffff;
 }
 
-.change-route {
+
+.location {
+  background-color: #2563eb;
+  color: #ffffff;
+  text-align: center;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  font-weight: bold; /* O usa un valor como 700 para un grosor mayor */
+}
+
+
+
+.location.hidden {
+  display: none;
+}
+
+
+
+.error {
   background-color: #f59e0b;
   color: #ffffff;
   text-align: center;
@@ -142,9 +162,11 @@ body {
   border-radius: 0.25rem;
 }
 
-.change-route.hidden {
+.error.hidden {
   display: none;
 }
+
+
 
 .traffic-zones {
   display: flex;
