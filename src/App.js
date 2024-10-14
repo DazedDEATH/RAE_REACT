@@ -9,7 +9,7 @@ function App() {
     <div className="min-h-screen bg-gray-100 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">AGV Control Panel</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {[...Array(numberOfAGVs)].map((_, index) => (
             <AGVPanel key={index + 1} agvNumber={index + 1} />
           ))}
