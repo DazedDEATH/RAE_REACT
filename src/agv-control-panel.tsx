@@ -36,7 +36,6 @@ const TrafficZone: React.FC<{ zone: string; agvNumber: number; agvData: any }> =
   // Consulta y convierte la solicitud de tráfico en la zona.
   const request = arrayBufferToNumber(agvData[`Traffic.Zone${zone}.Request`], 1);
   const busy = arrayBufferToNumber(agvData[`Traffic.Zone${zone}.Busy`], 1); // Agregamos la conversión para el estado de ocupación.
-  console.log(request);
 
   return (
     <div className="traffic-zone">
@@ -82,7 +81,27 @@ const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
     };
   }, [agvNumber]);
 
-  if (!agvData) return <div>Loading...</div>;  // Mostrar "Loading..." si no hay datos
+  // Verificar si Communication.ID tiene datos pero todos los demás campos son nulos o undefined
+  const isOnlyCommunicationIDPresent = agvData && agvData['Communication.ID'] && 
+    (!agvData['Communication.Status'] && 
+     !agvData['LayoutPosition.Route'] && 
+     !agvData['LayoutPosition.Point'] && 
+     !agvData['Traffic.ZoneA.Request'] && 
+     !agvData['Traffic.ZoneA.Busy'] && 
+     !agvData['Traffic.ZoneB.Request'] && 
+     !agvData['Traffic.ZoneB.Busy'] && 
+     !agvData['Battery.Percentage'] && 
+     !agvData['ScreenInfo'] && 
+     !agvData['AGVEnable']);
+
+  // Mostrar "Loading..." si Communication.ID tiene valor pero el resto de los campos son nulos
+  if (isOnlyCommunicationIDPresent) {
+    return;
+  }
+
+  if (!agvData) {
+    return;
+  }
 
   const batteryPercentage = arrayBufferToNumber(agvData['Battery.Percentage'], 2); // Consulta el porcentaje de batería del AGV.
   const agvEnabled = agvData['AGVEnable']; // Consulta si el AGV está habilitado (si el valor es mayor a 50).

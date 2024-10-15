@@ -4,7 +4,7 @@ import './agv-control-panel.css';  // Importa el archivo de estilos CSS correspo
 
 function App() {
   // Definimos el número de AGVs que se mostrarán en la pantalla. Actualmente, está configurado para mostrar 2 paneles.
-  const numberOfAGVs = 3;  // Puedes cambiar este número para mostrar más AGVs en la interfaz.
+  const numberOfAGVs = 200;  // Puedes cambiar este número para mostrar más AGVs en la interfaz.
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
