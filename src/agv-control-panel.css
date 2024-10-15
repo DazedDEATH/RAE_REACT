@@ -29,7 +29,7 @@ body {
 
 .header-left, .header-right {
   display: flex;
-  gap: 1rem;
+  gap: 1.1rem;
   align-items: center;
 }
 
@@ -69,11 +69,12 @@ body {
   display: flex;
   align-items: center;
   gap: 0.2rem;
+  font-size: 1.3rem;
 }
 
 .battery-icon {
-  width: 2.1rem;
-  height: 2.1rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 .battery .value.battery-high {
@@ -89,9 +90,14 @@ body {
 }
 
 .screen-info .value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #374151;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.25rem;
   border-radius: 0.25rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 .communication {
@@ -101,8 +107,8 @@ body {
 }
 
 .wifi-icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 .communication .value.connected {
@@ -269,5 +275,59 @@ body {
 }
 
 .text-gray-800 {
+  color: #1f2937;
+}
+
+.id-agv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.id-labels, .id-values {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.id-agv .label {
+  flex: 1;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+}
+
+.id-agv .value, .communication-id {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.5rem 0.5rem;
+  border-radius: 0rem;
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.id-agv .value.enabled {
+  background-color: #10b981;
+}
+
+.id-agv .value.disabled {
+  background-color: #ef4444;
+}
+
+.communication-id {
+  background-color: white;
+}
+
+.comm-id-value {
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: bold;
   color: #1f2937;
 }

@@ -109,6 +109,7 @@ const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
   const screenInfo = arrayBufferToNumber(agvData['ScreenInfo'], 2); // Consulta la información de la pantalla del AGV.
   const route = arrayBufferToNumber(agvData['LayoutPosition.Route'], 2);
   const point = arrayBufferToNumber(agvData['LayoutPosition.Point'], 2);
+  const communicationId = agvData['Communication.ID'];
 
   // Función para determinar el color de la batería basado en su porcentaje.
   const getBatteryColor = (percentage: number) => {
@@ -119,99 +120,74 @@ const AGVPanel: React.FC<AGVProps> = ({ agvNumber }) => {
 
   return (
     <div className="agv-panel">
-      {/* Contenedor principal del panel del AGV */}
       <div className="panel-header">
-        {/* Cabecera del panel */}
         <div className="header-left">
-          {/* Parte izquierda de la cabecera */}
           <div className="id-agv">
-            {/* Muestra el número del AGV */}
-            <div className="label">ID_AGV</div>
-            {/* Etiqueta para el ID del AGV */}
-            <div className={`value ${agvEnabled ? 'enabled' : 'disabled'}`}>
-              {/* Muestra si el AGV está habilitado o deshabilitado */}
-              {agvData['ID_AGV']}
-              {/* Muestra el valor del ID del AGV */}
+            <div className="id-labels">
+              <span className="label">C_ID</span>
+              <span className="label">ID_AGV</span>
+            </div>
+            <div className="id-values">
+              
+              <div className="communication-id">
+                <div className="comm-id-value">{communicationId}</div>
+              </div>
+
+              <div className={`value ${agvEnabled ? 'enabled' : 'disabled'}`}>
+                {agvData['ID_AGV']}
+              </div>
+
             </div>
           </div>
           <div className="battery">
-            {/* Información de la batería */}
             <div className="label">Battery</div>
-            {/* Etiqueta 'Battery' */}
             <div className={`value ${getBatteryColor(batteryPercentage)}`}>
-              {/* Muestra el estado de la batería con un color según su nivel */}
               <Battery className="battery-icon" />
-              {/* Icono de batería */}
               <span>{batteryPercentage}%</span>
-              {/* Muestra el porcentaje de la batería */}
             </div>
           </div>
         </div>
         <div className="header-right">
-          {/* Parte derecha de la cabecera */}  
           <div className="screen-info">
-            {/* Información de la pantalla del AGV */}
             <div className="label">ScreenInfo</div>
-            {/* Etiqueta 'ScreenInfo' */}
             <div className="value">{screenInfo}</div>
-            {/* Muestra la información de la pantalla */}
           </div>
           <div className="communication">
-            {/* Estado de la comunicación del AGV */}
             <div className="label">Communication</div>
-            {/* Etiqueta 'Communication' */}
             <div className={`value ${wifiStatus === 1 ? 'connected' : 'disconnected'}`}>
-              {/* Muestra el estado de la conexión WiFi */}
               <Wifi className="wifi-icon" />
-              {/* Icono de WiFi */}
             </div>
           </div>
         </div>
       </div>
 
       <div className={`location ${route === 2 ? '' : 'hidden'}`}>
-        {/* Botón para cambiar la ruta (visible solo si screenInfo es igual a 19) */}
         CORNER MOD RH
       </div>
 
       <div className="panel-body">
-        {/* Cuerpo principal del panel del AGV */}
         <div className="route-point">
-          {/* Información de la ruta y el punto del AGV */}
           <div className="route">
-            {/* Muestra la ruta actual del AGV */}
             <div className="label">Route</div>
-            {/* Etiqueta 'Route' */}
             <div className="value">{route}</div>
-            {/* Muestra el valor de la ruta */}
           </div>
           <div className="point">
-            {/* Muestra el punto actual del AGV */}
             <div className="label">Point</div>
-            {/* Etiqueta 'Point' */}
             <div className="value">{point}</div>
-            {/* Muestra el valor del punto */}
           </div>
         </div>
 
-      
-      <div className={`error ${screenInfo === 19 ? '' : 'hidden'}`}>
-        {/* Botón para cambiar la ruta (visible solo si screenInfo es igual a 19) */}
-        Change route
-      </div>
+        <div className={`error ${screenInfo === 19 ? '' : 'hidden'}`}>
+          Change route
+        </div>
 
-    
         <div className="traffic-zones">
-          {/* Contenedor para las zonas de tráfico */}
           <TrafficZone zone="A" agvNumber={agvNumber} agvData={agvData} />
-          {/* Renderiza el componente TrafficZone para la zona A */}
           <TrafficZone zone="B" agvNumber={agvNumber} agvData={agvData} />
-          {/* Renderiza el componente TrafficZone para la zona B */}
-      </div>
-
+        </div>
       </div>
     </div>
   );
 };
 
-export default AGVPanel; // Exporta el componente AGVPanel para que pueda ser utilizado en otras partes de la aplicación.
+export default AGVPanel;
