@@ -1,10 +1,11 @@
 import React from 'react';  // Importa la librería React, necesaria para crear componentes React.
 import AGVPanel from './agv-control-panel.tsx';  // Importa el componente AGVPanel desde el archivo 'agv-control-panel.tsx'.
 import './agv-control-panel.css';  // Importa el archivo de estilos CSS correspondiente a los paneles AGV.
+//import './App.css';
 
 function App() {
   // Definimos el número de AGVs que se mostrarán en la pantalla. Actualmente, está configurado para mostrar 2 paneles.
-  const numberOfAGVs = 200;  // Puedes cambiar este número para mostrar más AGVs en la interfaz.
+  const numberOfAGVs = 30;  // Puedes cambiar este número para mostrar más AGVs en la interfaz.
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">

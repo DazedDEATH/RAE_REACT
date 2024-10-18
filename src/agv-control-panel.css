@@ -1,70 +1,79 @@
 /* agv-control-panel.css */
 
+/* Configuración básica del cuerpo: fuente estándar, suavizado de texto y color de fondo */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f3f4f6;
+  -webkit-font-smoothing: antialiased; /* Suavizado de fuentes en WebKit */
+  -moz-osx-font-smoothing: grayscale; /* Suavizado para OSX */
+  background-color: #f3f4f6; /* Fondo gris claro */
 }
 
+/* Estilo general del panel AGV */
 .agv-panel {
-  background-color: #1f2937;
-  border-radius: 0.5rem;
+  background-color: #1f2937; /* Fondo gris oscuro */
+  border-radius: 0.5rem; /* Bordes redondeados */
   padding: 1rem;
   margin-bottom: 1rem;
-  color: #ffffff;
+  color: #ffffff; /* Texto blanco */
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.5rem; /* Espaciado entre los elementos */
 }
 
+/* Cabecera del panel con distribución horizontal */
 .panel-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Distribución entre los extremos */
   align-items: center;
-  margin-bottom: 0.5rem;  
+  margin-bottom: 0.5rem;
 }
 
+/* Estilos para los elementos en los extremos de la cabecera */
 .header-left, .header-right {
   display: flex;
-  gap: 1.1rem;
+  gap: 1.1rem; /* Espacio entre los ítems */
   align-items: center;
 }
 
+/* Contenedores para etiquetas y valores específicos */
 .id-agv, .battery, .screen-info, .communication {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Alineación vertical */
   align-items: center;
 }
 
+/* Estilo de las etiquetas */
 .label {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: #9ca3af; /* Gris claro */
   margin-bottom: 0.25rem;
   text-align: center;
 }
 
+/* Estilo de los valores */
 .value {
   font-size: 1rem;
   font-weight: bold;
   text-align: center;
 }
 
+/* Estilo específico para los valores del ID AGV */
 .id-agv .value {
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
 }
 
+/* Colores para el estado habilitado y deshabilitado */
 .id-agv .value.enabled {
-  background-color: #10b981;
+  background-color: #10b981; /* Verde */
 }
-
 .id-agv .value.disabled {
-  background-color: #ef4444;
+  background-color: #ef4444; /* Rojo */
 }
 
+/* Estilo de valores de la batería */
 .battery .value {
   display: flex;
   align-items: center;
@@ -72,94 +81,85 @@ body {
   font-size: 1.3rem;
 }
 
+/* Tamaño del ícono de batería */
 .battery-icon {
   width: 2rem;
   height: 2rem;
 }
 
-.battery .value.battery-high {
-  color: #10b981;
-}
+/* Colores según nivel de batería */
+.battery .value.battery-high { color: #10b981; /* Verde */ }
+.battery .value.battery-medium { color: #f59e0b; /* Amarillo */ }
+.battery .value.battery-low { color: #ef4444; /* Rojo */ }
 
-.battery .value.battery-medium {
-  color: #f59e0b;
-}
-
-.battery .value.battery-low {
-  color: #ef4444;
-}
-
+/* Estilo de la información en pantalla */
 .screen-info .value {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #374151;
-  padding: 0.25rem 0.25rem;
+  padding: 0.25rem;
   border-radius: 0.25rem;
   width: 2rem;
   height: 2rem;
 }
 
+/* Estilo de la comunicación */
 .communication {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* Ícono de WiFi */
 .wifi-icon {
   width: 2rem;
   height: 2rem;
 }
 
-.communication .value.connected {
-  color: #10b981;
-}
+/* Colores para estados de conexión */
+.communication .value.connected { color: #10b981; /* Verde */ }
+.communication .value.disconnected { color: #ef4444; /* Rojo */ }
 
-.communication .value.disconnected {
-  color: #ef4444;
-}
-
+/* Cuerpo del panel */
 .panel-body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
+/* Estilo de los puntos de ruta */
 .route-point {
   display: flex;
   justify-content: space-around;
-  background-color: #2563eb;
+  background-color: #2563eb; /* Azul */
   padding: 0.5rem;
   border-radius: 0.25rem;
 }
 
+/* Estilo para las rutas y puntos */
 .route, .point {
   text-align: center;
   flex: 1;
 }
 
+/* Etiquetas dentro de rutas y puntos */
 .route .label, .point .label {
-  color: #ffffff;
+  color: #ffffff; /* Blanco */
 }
 
-
+/* Ubicación visible u oculta */
 .location {
-  background-color: #2563eb;
+  background-color: #3a5da8;
   color: #ffffff;
   text-align: center;
   padding: 0.25rem;
   border-radius: 0.25rem;
-  font-weight: bold; /* O usa un valor como 700 para un grosor mayor */
+  font-weight: bold;
 }
+.location.hidden { display: none; /* Oculto */ }
 
-
-
-.location.hidden {
-  display: none;
-}
-
-
-
+/* Estilo para errores */
 .error {
   background-color: #f59e0b;
   color: #ffffff;
@@ -167,19 +167,14 @@ body {
   padding: 0.25rem;
   border-radius: 0.25rem;
 }
+.error.hidden { display: none; /* Oculto */ }
 
-.error.hidden {
-  display: none;
-}
-
-
-
+/* Configuración de zonas de tráfico */
 .traffic-zones {
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
 }
-
 .traffic-zone {
   background-color: #374151;
   padding: 0.5rem;
@@ -187,97 +182,57 @@ body {
   flex: 1;
 }
 
+/* Título de la zona */
 .zone-title {
   font-size: 0.875rem;
   font-weight: 600;
   text-align: center;
   margin-bottom: 0.25rem;
-  color: #d1d5db;
+  color: #d1d5db; /* Gris claro */
 }
 
+/* Contenido dentro de las zonas */
 .zone-content {
   display: flex;
   justify-content: space-around;
 }
 
-.zone-item {
-  text-align: center;
-}
+/* Estilo de ítems y etiquetas en las zonas */
+.zone-item { text-align: center; }
+.zone-label { font-size: 0.75rem; color: #9ca3af; }
+.zone-value { font-size: 1.125rem; font-weight: bold; }
 
-.zone-label {
-  font-size: 0.75rem;
-  color: #9ca3af;
-}
+/* Colores según estado de las zonas */
+.zone-value.request { color: #60a5fa; /* Azul claro */ }
+.zone-value.busy { color: #f87171; /* Rojo claro */ }
 
-.zone-value {
-  font-size: 1.125rem;
-  font-weight: bold;
-}
+/* Layout responsivo */
+.grid { display: grid; gap: 1rem; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
 
-.zone-value.request {
-  color: #60a5fa;
-}
-
-.zone-value.busy {
-  color: #f87171;
-}
-
-/* Responsive layout */
-.grid {
-  display: grid;
-  gap: 1rem;
-}
-
-.grid-cols-1 {
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-
+/* Estilo para pantallas grandes */
 @media (min-width: 1024px) {
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-.max-w-7xl {
-  max-width: 80rem;
-}
+/* Tamaño máximo y centrado del contenedor */
+.max-w-7xl { max-width: 80rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
 
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
+/* Espaciado vertical */
+.py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
 
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
+/* Tamaño y estilo del texto */
+.text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+.font-bold { font-weight: 700; }
+.mb-8 { margin-bottom: 2rem; }
+.text-center { text-align: center; }
+.text-gray-800 { color: #1f2937; /* Gris oscuro */ }
 
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
-
-.font-bold {
-  font-weight: 700;
-}
-
-.mb-8 {
-  margin-bottom: 2rem;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-gray-800 {
-  color: #1f2937;
-}
-
+/* Estilo del ID AGV */
 .id-agv {
   display: flex;
   flex-direction: column;
@@ -285,6 +240,7 @@ body {
   width: 100%;
 }
 
+/* Distribución de etiquetas y valores */
 .id-labels, .id-values {
   display: flex;
   justify-content: space-between;
@@ -293,13 +249,7 @@ body {
   gap: 0.5rem;
 }
 
-.id-agv .label {
-  flex: 1;
-  font-size: 0.75rem;
-  color: #9ca3af;
-  margin-bottom: 0.25rem;
-}
-
+/* Valores del ID AGV */
 .id-agv .value, .communication-id {
   flex: 1;
   display: flex;
@@ -307,27 +257,47 @@ body {
   align-items: center;
   font-size: 1.5rem;
   font-weight: bold;
-  padding: 0.5rem 0.5rem;
-  border-radius: 0rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
   width: 2.2rem;
   height: 2.2rem;
 }
 
-.id-agv .value.enabled {
-  background-color: #10b981;
-}
+/* Fondo para comunicación */
+.communication-id { background-color: white; }
 
-.id-agv .value.disabled {
-  background-color: #ef4444;
-}
-
-.communication-id {
-  background-color: white;
-}
-
+/* Valor del ID de comunicación */
 .comm-id-value {
   align-items: center;
   font-size: 1.8rem;
   font-weight: bold;
   color: #1f2937;
 }
+
+.error.informative {
+  background-color: rgba(0, 128, 0, 0.854);
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.25rem;
+  border-radius: 0.8rem;
+}
+
+.error.warning {
+  background-color: rgba(255, 191, 0, 0.913);
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.25rem;
+  border-radius: 0.8rem;
+}
+
+.error.machine-stops {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.25rem;
+  border-radius: 0.8rem;
+}
+
