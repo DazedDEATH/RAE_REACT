@@ -1,0 +1,53 @@
+/* Menú lateral (por defecto oculto) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(31, 41, 55, 0.9); /* Color gris oscuro con opacidad */
+    color: #ffffff;
+    padding: 2rem;
+    transform: translateX(-100%); /* Mueve el menú completamente fuera de la vista */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  
+  /* Menú lateral desplegado */
+  .sidebar.open {
+    transform: translateX(0); /* Trae el menú a la vista */
+  }
+  
+  /* Botón para cerrar el menú */
+  .close-button {
+    background-color: #ef4444;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-bottom: 2rem;
+  }
+  
+  /* Botón para abrir el menú (flotante) */
+  .menu-button {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    z-index: 1100;
+  }
+  
+  /* Oculta el contenido principal cuando el menú está abierto */
+  .content.hidden {
+    display: none;
+  }
+  

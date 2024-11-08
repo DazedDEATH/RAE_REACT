@@ -75,7 +75,7 @@ io.on('connection', async (socket) => {
 });
 
 // Inicia el polling cada 3 segundos
-setInterval(pollDatabase, 3000);
+setInterval(pollDatabase, 500);
 
 // Iniciar el servidor en el puerto 3001
 server.listen(3001, () => {
